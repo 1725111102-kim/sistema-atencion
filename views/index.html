@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Atencion</title>
+    <style>
+        body { font-family: Arial; max-width: 700px; margin: 40px auto; background: #f4f4f4; }
+        .caja { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        input { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
+        button { padding: 10px 15px; border: none; background: #2b6cb0; color: white; border-radius: 5px; cursor: pointer; margin-right: 10px; }
+        .mensaje { background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 15px; }
+        .alerta { background: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<h1>Sistema de Atencion - Ventanilla</h1>
+
+{% if mensaje %}
+    <div class="{{ 'alerta' if 'vacia' in mensaje else 'mensaje' }}">{{ mensaje }}</div>
+{% endif %}
+
+<div class="caja">
+    <h3>Agregar estudiante</h3>
+    <form method="post">
+        <input type="hidden" name="accion" value="agregar">
+        <input type="text" name="matricula" placeholder="Matricula" required>
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="text" name="carrera" placeholder="Carrera" required>
+        <input type="text" name="tramite" placeholder="Tipo de tramite" required>
+        <button type="submit">Agregar a la fila</button>
+    </form>
+</div>
+
+<div class="caja">
+    <h3>Acciones</h3>
+    <form method="post" style="display:inline">
+        <input type="hidden" name="accion" value="atender">
+        <button type="submit">Atender siguiente</button>
+    </form>
+    <form method="post" style="display:inline">
+        <input type="hidden" name="accion" value="siguiente">
+        <button type="submit">Ver siguiente</button>
+    </form>
+</div>
+
+<div class="caja">
+    <h3>Estudiantes esperando: {{ fila|length }}</h3>
+    {% if fila|length == 0 %}
+        <p>No hay nadie en la fila.</p>
+    {% else %}
+        <ul>
+        {% for e in fila %}
+            <li>{{ e.matricula }} - {{ e.nombre }} - {{ e.carrera }} - {{ e.tramite }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+</body>
+</html>
